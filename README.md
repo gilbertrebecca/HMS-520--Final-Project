@@ -28,3 +28,7 @@ Group meeting to develop and record presentation on Dec 13th
 Submit presentation on or before Dec 15th
 Submit GitHub repository on or before Dec 15th
 
+Accessing data:
+Navigate to CDC's ATSDR Social Vulnerability Indexi site (link: https://www.atsdr.cdc.gov/placeandhealth/svi/data_documentation_download.html). Under Year, select 2018. Under Geography, select "United States." Under Geography Type, select Counties. Choose the radio button labeled "CSV File (table data)" and click Go. The documentation for 2018 is available at this same site.
+
+You must save the data locally and point the script to the file path at the variable called "location_of_data" on line 10.

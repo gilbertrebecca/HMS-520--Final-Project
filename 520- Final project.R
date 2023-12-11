@@ -6,9 +6,12 @@ library(ggplot2)
 library(usmap)
 library(rigr)
 
+# USER INPUTS LOCATION OF DATA ON THEIR LOCAL MACHINE
+location_of_data <- "/Users/SusanCampbell/UW_HMS_R/hms_520_final/SVI_2018_US_county.csv"
+
 # read in 2018 data for county-level social vulnerability indices from CDC (CDC SVI)
 # based on documentation, the value "-999" represents missing data, so we recoded as NAs
-svi <- read.csv("C:/Users/rebec/OneDrive/UW Graduate School/Programming/SVI_2018_US_county.csv", 
+svi <- read.csv(location_of_data, 
                 na.strings = "-999")
 
 # link to data documentation and dictionary
@@ -31,13 +34,6 @@ sum(any_na_in_rows) # just 1 row has any NAs
 # discarding data for the single county with significant missing data because we believe the data may not be reliable
 fips_to_discard <- svi[which(any_na_in_rows == TRUE), "fips"] # for 2018, Rio Arriba county in NM discarded
 svi <- filter(svi, fips != fips_to_discard)
-
-# TODO: fix xthis!!
-# select columns that give raw counts (i.e., those that begin with "e_") and in the composite indicator columns (beginning with "spl_")
-# select_raw_counts_cols <- function(data) {
-#   data <- select("state" | starts_with(c("e_", "spl_")))
-#   return(data)
-# }
 
 # in reading through documentation, the following variables were of interest to us
 cols_of_interest <- c("e_totpop", # total population
@@ -85,7 +81,6 @@ calculate_percents <- function(data, variable_names, denominator_col) {
   return(data)
 }
 
-# see in final_project_functions.R
 svi_state <- calculate_percents(svi_state, 
                                 cols_of_interest[2:6], 
                                 "e_totpop") %>%
@@ -113,54 +108,13 @@ plot_map <- function(data, map_var, legend_title = "Percent with feature", inclu
   return(map)
 }
 
-# plot map of features by US counties
-pov_by_county <- plot_map(data = svi, 
-                          map_var = "ep_pov", 
-                          legend_title = "Percent below 1.5x poverty line (2018)")
-nohsdp_by_county <- plot_map(data = svi, 
-                             map_var = "ep_nohsdp", 
-                             legend_title = "Percent without HS diploma (2018)", 
-                             var_color = "blue")
-unemp_by_county <- plot_map(data = svi, 
-                            map_var = "ep_unemp", 
-                            legend_title = "Percent unemployment (2018)", 
-                            var_color = "green")
-
-# plot map of features by US states
-pov_by_state <- plot_map(data = svi_state, 
-                         map_var = "percent_pov", 
-                         legend_title = "Percent below 1.5x poverty line (2018)")
-nohsdp_by_state <- plot_map(data = svi_state, 
-                            map_var = "percent_nohsdp", 
-                            legend_title = "Percent without HS diploma (2018)", 
-                            var_color = "blue")
-unemp_by_state <- plot_map(data = svi_state, 
-                           map_var = "percent_unemp", 
-                           legend_title = "Percent unemployment (2018)", 
-                           var_color = "green")
-
-# plot map of features by counties in Washington state
-pov_wa <- plot_map(data = svi_wa, 
-                   map_var = "ep_pov", 
-                   legend_title = "Percent below 1.5x poverty line (2018)", 
-                   include_geo = "WA")
-nohsdp_wa <- plot_map(data = svi_wa, 
-                      map_var = "ep_nohsdp", 
-                      legend_title = "Percent without HS diploma (2018)", 
-                      include_geo = "WA", 
-                      var_color = "blue")
-unemp_wa <- plot_map(data = svi_wa, 
-                     map_var = "ep_unemp", 
-                     legend_title = "Percent unemployment (2018)", 
-                     include_geo = "WA", 
-                     var_color = "green")
 
 
 ################## Modeling ##################
 
-#Check the normality of the distribution of the variables
+# Check the normality of the distribution of the variables
 
-#Histogram
+# Histogram
 
 plot_hist_counts <- function(data) {
   par(mfrow = c(2, 3))  # Set up a 2x3 grid for multiple plots
@@ -182,8 +136,10 @@ plot_hist_percents <- function(data) {
 
 plot_hist_counts(svi)
 plot_hist_percents(svi_state)
+plot_hist_counts(svi_wa)
 
-#Q-Q plot
+
+# Q-Q plot
 
 plot_qq_counts <- function(data) {
   par(mfrow = c(2, 3))  # Set up a 2x3 grid for multiple plots
@@ -223,10 +179,14 @@ plot_qq_percents <- function(data) {
 
 plot_qq_counts(svi)
 plot_qq_percents(svi_state)
+plot_qq_counts(svi_wa)
 
+
+
+######################### High school education and poverty ######################
 
 plot_scatter_with_lm <- function(data, x_var, y_var, plot_title = NULL) {
-
+  
   ggplot(data, aes(x = .data[[x_var]], y = .data[[y_var]])) +
     geom_point() +
     geom_smooth(method = "lm", se = FALSE, color = "blue") +  # Add regression line
@@ -236,9 +196,6 @@ plot_scatter_with_lm <- function(data, x_var, y_var, plot_title = NULL) {
          log = "xy")
   
 }
-
-
-######################### High school education and poverty ######################
 
 plot_scatter_with_lm(data = svi, 
              x_var = "e_nohsdp", 
@@ -300,7 +257,6 @@ summary(lm_nohsdp_washington)
 
 ################# Mapping ###################
 
-# TODO: consider removing from this script
 plot_map <- function(data, map_var, legend_title = "Percent with feature", include_geo = FALSE, var_color = "darkred") {
   
   if(include_geo == FALSE) {
@@ -357,6 +313,7 @@ unemp_wa <- plot_map(data = svi_wa,
                      legend_title = "Percent unemployment (2018)", 
                      include_geo = "WA", 
                      var_color = "green")
+
 
 
 
