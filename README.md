@@ -32,3 +32,6 @@ Accessing data:
 Navigate to CDC's ATSDR Social Vulnerability Indexi site (link: https://www.atsdr.cdc.gov/placeandhealth/svi/data_documentation_download.html). Under Year, select 2018. Under Geography, select "United States." Under Geography Type, select Counties. Choose the radio button labeled "CSV File (table data)" and click Go. The documentation for 2018 is available at this same site.
 
 You must save the data locally and point the script to the file path at the variable called "location_of_data" on line 10.
+
+Accessing presentation:
+We sent you a link to the zipped presentation through Google/Google Drive because git wouldn't accept the size of the file (we tried to make it smaller and couldn't get it below 25 MB). Let us know if you need us to share it a different way.
