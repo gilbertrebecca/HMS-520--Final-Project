@@ -34,4 +34,4 @@ Navigate to CDC's ATSDR Social Vulnerability Indexi site (link: https://www.atsd
 You must save the data locally and point the script to the file path at the variable called "location_of_data" on line 10.
 
 Accessing presentation:
-We sent you a link to the zipped presentation through Google/Google Drive because git wouldn't accept the size of the file (we tried to make it smaller and couldn't get it below 25 MB). Let us know if you need us to share it a different way.
+We thought we had recorded on the cloud but something seems to have failed... we sent you a link to the zipped presentation through Google/Google Drive because git wouldn't accept the size of the file (we tried to make it smaller and couldn't get it below 25 MB). Let us know if you need us to share it a different way.
